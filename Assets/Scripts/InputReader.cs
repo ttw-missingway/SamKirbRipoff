@@ -123,6 +123,8 @@ namespace Combat
             if (Input.GetKeyDown(internalKeys[InternalInputs.Attack]))
             {
                 print("FAULT!");
+                bell.DisplayBell();
+                attack.EventReset();
             }
         }
 
@@ -137,6 +139,8 @@ namespace Combat
 
             if (Input.GetKeyDown(internalKeys[InternalInputs.Attack]))
             {
+                if (attack.GetAttackState != AttackDrawer.AttackState.Neutral) return;
+
                 attack.DoAttack();
 
                 if (CheckClash())
