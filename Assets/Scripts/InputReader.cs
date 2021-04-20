@@ -14,6 +14,10 @@ namespace Combat
         [SerializeField] bool _hasAttacked = false;
         [SerializeField] bool _hasParried = false;
 
+        [SerializeField] private bool _clashDetected = false;
+
+        public string FighterName;
+
         public bool HasAttacked => _hasAttacked;
         public bool HasParried => _hasParried;
 
@@ -52,6 +56,13 @@ namespace Combat
             bell.OnBell += SetPostBell;
 
             AssignInternalInputs(player);
+        }
+
+        public void ClashResetAttack()
+        {
+            _hasAttacked = false;
+            _currentState = InputState.PostBell;
+            _clashDetected = false;
         }
 
         private void AssignInternalInputs(int player)
@@ -117,6 +128,8 @@ namespace Combat
 
         private void PostBellInputs()
         {
+            if (attack.GetInputFreeze) return;
+
             if (Input.GetKeyDown(internalKeys[InternalInputs.Parry]))
             {
                 attack.DoParry();
@@ -125,20 +138,52 @@ namespace Combat
             if (Input.GetKeyDown(internalKeys[InternalInputs.Attack]))
             {
                 attack.DoAttack();
+
+                if (CheckClash())
+                {
+                    print("Clash!");
+                    _clashDetected = true;
+                    return;
+                }
+
                 SetPostInput();
 
                 if (opponent.HasParried)
                 {
                     winDetector.SetWinningPlayer(opponent);
-                    return;
-                }
-
-                if (!opponent.HasAttacked)
-                {
-                    winDetector.SetWinningPlayer(this);
-                    return;
+                    attack.EventReset();
+                    opponent.SetPostInput();
                 }
             }
         }
+
+        public void AttackActive()
+        {
+            SetAttack();
+
+            if (opponent.HasAttacked) return;
+
+            if (opponent.RequestWinConditionMet())
+            {
+                winDetector.SetWinningPlayer(this);
+                opponent.SetPostInput();
+            }     
+        }
+
+        public bool RequestWinConditionMet()
+        {
+            if (_clashDetected)
+            {
+                ClashResetAttack();
+                attack.EventReset();
+                opponent.ClashResetAttack();
+                opponent.GetComponent<AttackDrawer>().EventReset();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckClash() => opponent.GetComponent<AttackDrawer>().GetAttackState == AttackDrawer.AttackState.AttackStartUp;
     }
 }
