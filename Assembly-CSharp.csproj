@@ -57,14 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/InputReader.cs" />
-    <Compile Include="Assets/GameInputs.cs" />
-    <Compile Include="Assets/WinDetector.cs" />
-    <Compile Include="Assets/MotionControl.cs" />
-    <Compile Include="Assets/FakeScript.cs" />
+    <Compile Include="Assets/Scripts/GameInputs.cs" />
+    <Compile Include="Assets/Scripts/WinDetector.cs" />
     <Compile Include="Assets/Scripts/Bell.cs" />
     <Compile Include="Assets/Scripts/AttackDrawer.cs" />
     <Compile Include="Assets/Scripts/GameClock.cs" />
-    <Compile Include="Assets/Scripts/NewClass.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />

@@ -1,12 +1,11 @@
 ﻿<Properties StartupConfiguration="{9C310B6E-9528-ABB3-F825-EF4F3C527A7A}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/AttackDrawer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/WinDetector.cs">
     <Files>
-      <File FileName="Assets/Scripts/AttackDrawer.cs" Line="73" Column="1" />
-      <File FileName="Assets/Scripts/Bell.cs" Line="32" Column="14" />
-      <File FileName="Assets/Scripts/GameClock.cs" Line="1" Column="1" />
-      <File FileName="Assets/GameInputs.cs" Line="1" Column="1" />
-      <File FileName="Assets/WinDetector.cs" />
-      <File FileName="Assets/Scripts/InputReader.cs" Line="126" Column="14" />
+      <File FileName="Assets/Scripts/AttackDrawer.cs" Line="105" Column="33" />
+      <File FileName="Assets/Scripts/Bell.cs" Line="23" Column="50" />
+      <File FileName="Assets/Scripts/GameClock.cs" />
+      <File FileName="Assets/Scripts/InputReader.cs" Line="148" Column="1" />
+      <File FileName="Assets/Scripts/WinDetector.cs" Line="14" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,7 +13,7 @@
           <Node name="SamKirbRipoff-master" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="AttackDrawer.cs" selected="True" />
+                <Node name="WinDetector.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -24,7 +23,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="642094e9-c83b-4414-a7b8-eb91ac24006c" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3af11335-3fe0-411b-83ed-2e45d4e6f7f4" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

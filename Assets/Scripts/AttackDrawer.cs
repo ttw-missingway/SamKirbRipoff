@@ -9,6 +9,7 @@ namespace Combat
     {
         SpriteRenderer spriteRenderer;
         InputReader inputReader;
+        [SerializeField] AttackState _attackState;
         [SerializeField] Bell bell;
         [SerializeField] bool _inputFreeze = false;
         public bool GetInputFreeze => _inputFreeze;
@@ -29,8 +30,22 @@ namespace Combat
             Feint
         }
 
+        public enum AttackState
+        {
+            Neutral,
+            AttackStartUp,
+            Attacking,
+            Feinting,
+            ParryStartUp,
+            Parrying,
+            Recovery
+        }
+
+        public AttackState GetAttackState => _attackState;
+
         private void Start()
         {
+            _attackState = AttackState.Neutral;
             bell.OnBell += ForceEndAnimations;
             spriteRenderer = GetComponent<SpriteRenderer>();
             inputReader = GetComponent<InputReader>();
@@ -66,6 +81,7 @@ namespace Combat
 
         private IEnumerator RecoveryFrames(Ability ability)
         {
+            _attackState = AttackState.Recovery;
             spriteRenderer.color = Color.cyan;
             yield return new WaitForSeconds(ability.GetRecoveryFrames);
             ResetAttackState();
@@ -73,8 +89,24 @@ namespace Combat
 
         private void PerformAbility(Ability ability)
         {
-            if (ability.GetAttackType == AttackType.Attack) inputReader.SetAttack();
-            if (ability.GetAttackType == AttackType.Parry) inputReader.SetParry();
+            if (ability.GetAttackType == AttackType.Attack)
+            {
+                inputReader.AttackActive();
+                _attackState = AttackState.Attacking;
+            }
+
+            if (ability.GetAttackType == AttackType.Parry)
+            {
+                inputReader.SetParry();
+                _attackState = AttackState.Parrying;
+            }
+        }
+
+        public void EventReset()
+        {
+            StopAllCoroutines();
+            Ability attack = new Ability(AttackType.Attack, _attackStartUpTime, _attackActiveTime, _attackRecoverTime, Color.red);
+            StartCoroutine(RecoveryFrames(attack));
         }
 
         public void DoAttack()
@@ -82,6 +114,7 @@ namespace Combat
             _inputFreeze = true;
             Ability attack = new Ability(AttackType.Attack, _attackStartUpTime, _attackActiveTime, _attackRecoverTime, Color.red);
             StartAttackFrames(attack);
+            _attackState = AttackState.AttackStartUp;
         }
 
         public void DoParry()
@@ -89,6 +122,7 @@ namespace Combat
             _inputFreeze = true;
             Ability parry = new Ability(AttackType.Parry, _parryStartUpTime, _parryActiveTime, _parryRecoverTime, Color.green);
             StartAttackFrames(parry);
+            _attackState = AttackState.ParryStartUp;
         }
 
         public void DoFeint()
@@ -96,12 +130,14 @@ namespace Combat
             _inputFreeze = true;
             Ability feint = new Ability(AttackType.Feint, _feintStartUpTime, _feintActiveTime, _feintRecoverTime, Color.magenta);
             StartAttackFrames(feint);
+            _attackState = AttackState.Feinting;
         }
 
         private void ResetAttackState()
         {
             _inputFreeze = false;
             spriteRenderer.color = Color.white;
+            _attackState = AttackState.Neutral;
         }
 
         private void EndParry()

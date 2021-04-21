@@ -37,7 +37,7 @@ namespace Combat
             _bellTimerActual = UnityEngine.Random.Range(_bellTimerFloor, _bellTimerCeiling);
         }
 
-        private void DisplayBell()
+        public void DisplayBell()
         {
             bellDisplay.enabled = true;
             OnBell?.Invoke(this, EventArgs.Empty);
